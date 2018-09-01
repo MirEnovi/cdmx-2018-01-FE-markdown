@@ -2,6 +2,11 @@
 
 const { mdLinks } = require('./md-links');
 
+const [, , ...args] = process.argv;
+// argumentos de linea decomandos Yargs.
+
+
+console.log(args);
 
 // mdLinks('./some/example.md')
 //   .then(links => {
@@ -33,4 +38,3 @@ const { mdLinks } = require('./md-links');
 //     // => [{ href, text, file }]
 //   })
 //   .catch(console.error);
-

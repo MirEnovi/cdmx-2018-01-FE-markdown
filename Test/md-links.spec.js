@@ -1,9 +1,10 @@
 const {
-  mdLinks
+  mdLinks,
+  mdFile
 } = require('../md-links');
 
-describe('Md-Links', () => {
-  test('Deberia retornar', () => {
-    expect(mdLinks()).toBe();
+describe('mdFile', () => {
+  test('Deberia retornar ', () => {
+    expect(mdFile()).toBe();
   });
 });
