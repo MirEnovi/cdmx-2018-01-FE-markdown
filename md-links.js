@@ -1,3 +1,4 @@
+
 const fs = require('fs');
 const MarkdownIt = require('markdown-it'); // to html
 const jsdom = require('jsdom'); // to use dom
@@ -5,20 +6,7 @@ const {
   JSDOM
 } = jsdom;
 const fetch = require('node-fetch');
-// const path = require('path');
-// variable de entorno
-// console.log(path);
-
-const mdFile = () => {
-  fs.readFile('README.md', 'utf8', (err, data) => {
-    if (err) {
-      console.log('error');
-    } else {
-      mdLinks(data);
-      return data;
-    }
-  });
-};
+const path = require('path');
 
 const fetchLink = (link) => {
   // console.log(link);
@@ -28,11 +16,11 @@ const fetchLink = (link) => {
       // console.log(`El estatus es: ${res.status}, ${res.statusText}`);
       const status = `El estatus es: ${res.status}, ${res.statusText}`;
       console.log(status);
-      return status; 
+      return status;
     });
 };
 
-const mdLinks = (data) => {
+const mdFilterLinks = (data, fileA) => {
   const md = new MarkdownIt();
   const fileHTML = md.render(data);
   const dom = new JSDOM(fileHTML);
@@ -45,32 +33,55 @@ const mdLinks = (data) => {
     obj = {
       links,
       textContent,
-      // stats,
+      fileA,
     };
-    fetchLink(links);
+    // fetchLink(links);
     arr.push(obj);
   });
-  // console.log(arr);
-  // console.log(result);
-  // console.log(fileHTML);
+  console.log(arr);
+  return arr;
 };
 
-mdFile();
+const readFile = (path, fileA) => {
+  // console.log(path);
+  fs.readFile(path, 'utf8', (err, data) => {
+    if (err) {
+      console.log('error');
+    } else {
+      // console.log(data);
+      mdFilterLinks(data, fileA);
+      return data;
+    }
+  });
+};
+
+const mdConvertFile = (file) => {
+  const fileB = path.isAbsolute(file);
+  let fileA;
+  if (fileB) {
+    fileA = file;
+  } else {
+    fileA = path.resolve(file);
+  }
+  readFile(file, fileA);
+  return fileA;
+};
+
+
+const mdLinks = (docMd) => {
+  const path = mdConvertFile(docMd);
+};
 
 
 module.exports = {
-  mdFile,
+  // mdFile,
   mdLinks
 };
 
 
-// investigar
-// const exprReg = new RegExp('(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})');
-// const result = exprReg.exec(`${fileHTML}`); // gin match
-// forEach / retorna arreglo con url, texto que contiene el link y status.
 
-// path absoluta y relativa
-// pathExt
+
+// investigar
 
 // ashban
 // marked.lexer
