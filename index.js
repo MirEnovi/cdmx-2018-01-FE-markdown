@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
 const { mdLinks } = require('./md-links');
-
-const [, , ...args] = process.argv;
+const [, , ...args] = process.argv[2];
 // argumentos de linea decomandos Yargs.
+// console.log(args);
 
+// const docMd = 'prueba.md';
+mdLinks(docMd);
 
-console.log(args);
 
 // mdLinks('./some/example.md')
 //   .then(links => {
