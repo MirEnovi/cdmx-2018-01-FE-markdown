@@ -26,3 +26,9 @@ Recuerda revisar la [rúbrica](https://docs.google.com/spreadsheets/d/e/2PACX-1v
  [Array en MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array)
 * [Array.sort en MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/sort)
 * [Array.map en MDN](http://audiko.net/404)
+http://audiko.net/404
+
+
+![car dashboard](https://img.buzzfeed.com/buzzfeed-static/static/2017-02/7/12/enhanced/buzzfeed-prod-fastlane-03/original-17515-1486490056-3.jpg?crop=2041:1068;80,248),
+
+ ![alt text](imagenes/3524a98f-6fbd-4f12-a2ae-ec3587968267.jpg)
