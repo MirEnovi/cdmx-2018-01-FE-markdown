@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const MarkdownIt = require('markdown-it'); // to html
 const jsdom = require('jsdom'); // to use dom
@@ -9,20 +8,17 @@ const fetch = require('node-fetch');
 const path = require('path');
 
 const fetchLink = (link) => {
-  // console.log(link);
+  // console.log('hola');
   fetch(link)
     .then((res) => {
-      // console.log(res.statusText);
-      // console.log(`El estatus es: ${res.status}, ${res.statusText}`);
-      const status = `El estatus es: ${res.status}, ${res.statusText}`;
-      console.log(status);
-      return status;
+      const val = `El estatus es: ${res.status}, ${res.statusText}`;
+      // console.log(val);
+      return val;
     });
 };
 
-const mdFilterLinks = (data, fileA) => {
-  const md = new MarkdownIt();
-  const fileHTML = md.render(data);
+const mdFilterLinks = (fileHTML, path) => {
+  // console.log(data);
   const dom = new JSDOM(fileHTML);
   let obj = {};
   const arr = [];
@@ -30,53 +26,69 @@ const mdFilterLinks = (data, fileA) => {
   result.forEach((element) => {
     const links = element.href;
     const textContent = element.textContent;
+    const validate = fetchLink(links);
+    // console.log(validate);
     obj = {
       links,
       textContent,
-      fileA,
+      path,
+      validate
     };
-    // fetchLink(links);
     arr.push(obj);
   });
-  console.log(arr);
+  // console.log(validate);
   return arr;
 };
 
-const readFile = (path, fileA) => {
+const readFile = (path, callback) => {
   // console.log(path);
   fs.readFile(path, 'utf8', (err, data) => {
     if (err) {
       console.log('error');
     } else {
-      // console.log(data);
-      mdFilterLinks(data, fileA);
-      return data;
+      const md = new MarkdownIt();
+      const fileHTML = md.render(data);
+      // console.log(fileHTML);
+      
+      // mdFilterLinks(fileHTML, pathDir);
+      callback(fileHTML);
     }
   });
 };
 
 const mdConvertFile = (file) => {
-  const fileB = path.isAbsolute(file);
-  let fileA;
-  if (fileB) {
-    fileA = file;
+  const pathQuestion = path.isAbsolute(file);
+  let pathDir;
+  if (pathQuestion) {
+    pathDir = file;
   } else {
-    fileA = path.resolve(file);
+    pathDir = path.resolve(file);
   }
-  readFile(file, fileA);
-  return fileA;
+  // readFile(file, pathDir);
+  return pathDir;
 };
-
 
 const mdLinks = (docMd) => {
-  const path = mdConvertFile(docMd);
-};
+  const pathDir = mdConvertFile(docMd);
+  readFile(pathDir, (fileHTML) =>{
+    const pepitas = mdFilterLinks(fileHTML, pathDir);
+    console.log(pepitas);
+  });
+  // const arry = mdFilterLinks(fileHTML, pathDir);
 
+  // return new promise((resolve, reject) => {
+  //   if (err) reject(err);
+  //   else resolve();
+  // });
+};
 
 module.exports = {
-  // mdFile,
   mdLinks
 };
+
+
+
+
 
 
 
