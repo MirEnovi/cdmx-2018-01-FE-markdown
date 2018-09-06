@@ -7,8 +7,9 @@ const {
 
 // un if para validar el segundo argumento
 mdLinks(process.argv[2]);
-  // .then((array) => {
-  //   console.log(array);
+  // .then(array => console.log(array))
+  // .catch(error => {
+  //   console.log(error);
   // });
 
 

@@ -7,14 +7,14 @@ const {
 const fetch = require('node-fetch');
 const path = require('path');
 
-const fetchLink = (link) => {
+const fetchLink = (link, callbackL) => {
   // console.log('hola');
   fetch(link)
     .then((res) => {
       const val = `El estatus es: ${res.status}, ${res.statusText}`;
-      // console.log(val);
-      return val;
-    });
+      callbackL(val);
+    })
+    .catch(error => console.log(error));
 };
 
 const mdFilterLinks = (fileHTML, path) => {
@@ -26,17 +26,13 @@ const mdFilterLinks = (fileHTML, path) => {
   result.forEach((element) => {
     const links = element.href;
     const textContent = element.textContent;
-    const validate = fetchLink(links);
-    // console.log(validate);
     obj = {
       links,
       textContent,
       path,
-      validate
     };
     arr.push(obj);
   });
-  // console.log(validate);
   return arr;
 };
 
@@ -49,8 +45,6 @@ const readFile = (path, callback) => {
       const md = new MarkdownIt();
       const fileHTML = md.render(data);
       // console.log(fileHTML);
-      
-      // mdFilterLinks(fileHTML, pathDir);
       callback(fileHTML);
     }
   });
@@ -70,9 +64,24 @@ const mdConvertFile = (file) => {
 
 const mdLinks = (docMd) => {
   const pathDir = mdConvertFile(docMd);
-  readFile(pathDir, (fileHTML) =>{
-    const pepitas = mdFilterLinks(fileHTML, pathDir);
-    console.log(pepitas);
+  readFile(pathDir, (fileHTML) => {
+    const arrayObj = mdFilterLinks(fileHTML, pathDir);
+    // console.log(arrayObj);
+    for (let i = 0; i < arrayObj.length; i++) {
+      const url = arrayObj[i].links;
+      fetchLink(url, (val) => {
+        console.log(`${i} ${url} \n`);
+        console.log(`${i} ${arrayObj[i].textContent} \n`);
+        console.log(`${i} ${arrayObj[i].path} \n`);  
+        console.log(`${i} ${val} \n`); 
+      });
+    }
+    // return new promise((resolve, reject) => {
+    //   if (err)
+    //     reject(err);
+    //   else
+    //     resolve(arrayObj);
+    // });
   });
   // const arry = mdFilterLinks(fileHTML, pathDir);
 
@@ -85,12 +94,6 @@ const mdLinks = (docMd) => {
 module.exports = {
   mdLinks
 };
-
-
-
-
-
-
 
 
 // investigar
