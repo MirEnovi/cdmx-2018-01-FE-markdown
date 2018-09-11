@@ -3,7 +3,15 @@
 const {
   mdLinks
 } = require('./md-links');
-// const fetch = require('node-fetch');
+
+// const argv = require('yargs')
+//   .command('*.md', 'nombre del archivo md', {
+//     docMd: {
+//       demand: true,
+//       alias: 
+//     }
+//   }).argv;
+
 
 // un if para validar el segundo argumento
 mdLinks(process.argv[2]);
