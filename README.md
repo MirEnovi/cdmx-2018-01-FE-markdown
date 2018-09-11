@@ -14,5 +14,17 @@ Dado que en estos archivos se sulen icluir links de ejemplo, que con el paso del
 1.- Se debe acceder a este [link](https://github.com/MirEnovi/cdmx-2018-01-FE-markdown) en github.
 
 2.- Se debe folkear al repositorio.
-3.- Se debe clonar el repositorio.
-4.- Una vez con 
+
+3.- Se debe clonar el repositorio en tu local.
+
+4.- Se installan las dependencias que ya vienen indicadas es el package.json con npm install en la terminal.
+
+5.- En terminal se pone el nombre de la libreria, más el nombre del archivo que queremos revisar:
+    -md-links prueba.md
+(Usamos prueba.md que ya viene cargado para hacer una prueba).
+
+6.- Debe devolver un arreglo de links, con el texto que acompaña a dicho link, el path absoluto del archivo en donde fue encontrado y su estado (200 ok si aun esun link funcional).
+
+### Versiones de la librería.
+v2.2.2
+
