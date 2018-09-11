@@ -7,14 +7,15 @@ const {
 const fetch = require('node-fetch');
 const path = require('path');
 
-const fetchLink = (link, callbackL) => {
+const fetchLink = (link, sendFunctionPrin) => {
   // console.log('hola');
   fetch(link)
     .then((res) => {
       const val = `El estatus es: ${res.status}, ${res.statusText}`;
-      callbackL(val);
+      // console.log(res.status);
+      sendFunctionPrin(val);
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log('tenemos un error con el fetch'));
 };
 
 const mdFilterLinks = (fileHTML, path) => {
@@ -36,7 +37,7 @@ const mdFilterLinks = (fileHTML, path) => {
   return arr;
 };
 
-const readFile = (path, callback) => {
+const readFile = (path, sendFetch) => {
   // console.log(path);
   fs.readFile(path, 'utf8', (err, data) => {
     if (err) {
@@ -45,7 +46,7 @@ const readFile = (path, callback) => {
       const md = new MarkdownIt();
       const fileHTML = md.render(data);
       // console.log(fileHTML);
-      callback(fileHTML);
+      sendFetch(fileHTML);
     }
   });
 };
@@ -66,14 +67,14 @@ const mdLinks = (docMd) => {
   const pathDir = mdConvertFile(docMd);
   readFile(pathDir, (fileHTML) => {
     const arrayObj = mdFilterLinks(fileHTML, pathDir);
-    // console.log(arrayObj);
     for (let i = 0; i < arrayObj.length; i++) {
       const url = arrayObj[i].links;
+      // fetchLink(url);
       fetchLink(url, (val) => {
-        console.log(`${i} ${url} \n`);
-        console.log(`${i} ${arrayObj[i].textContent} \n`);
-        console.log(`${i} ${arrayObj[i].path} \n`);  
-        console.log(`${i} ${val} \n`); 
+        console.log(`${i + 1} ${url} \n`);
+        console.log(`${i + 1} ${arrayObj[i].textContent} \n`);
+        console.log(`${i + 1} ${arrayObj[i].path} \n`);  
+        console.log(`${i + 1} ${val} \n`); 
       });
     }
     // return new promise((resolve, reject) => {
@@ -95,24 +96,5 @@ module.exports = {
   mdLinks
 };
 
-
-// investigar
-
-// ashban
-// marked.lexer
-
-// test true error
-
-// parametro / argumento en funciones
-
-// cuando se usa funcion y arrow funcion
-
-// diferencia entre una ruta absoluta y ruta relativa
-// ruta completa o no... seguir investigando  currentworking directory
-
-// readline
-// node-fetch
-
-// argumentos de linea decomandos Yargs.
 
 // funciones recursivas
