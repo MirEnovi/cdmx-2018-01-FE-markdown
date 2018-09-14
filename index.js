@@ -14,11 +14,20 @@ const {
 
 
 // un if para validar el segundo argumento
-mdLinks(process.argv[2]);
-  // .then(array => console.log(array))
-  // .catch(error => {
-  //   console.log(error);
-  // });
+// mdLinks('prueba.md')
+//   .then(pathDir => {
+//     return readFile(pathDir);
+//   })
+//   .then(resp => {
+//     // console.log(resp.fileHTML, resp.path);
+//     return mdFilterLinks(resp.fileHTML, resp.path);
+//   })
+//   .then(arr =>{
+//     console.log(arr);
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
 
 
 // mdLinks('./some/example.md')
