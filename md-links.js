@@ -8,22 +8,36 @@ const {
 } = jsdom; // is a pure-JavaScript implementation of many web standards
 
 
-const fetchLink = (link) => {
-  // console.log('hola');
+const fetchLink = (arr) => {
   return new Promise((resolve, reject) => {
-    if (!link) {
-      reject(`el empleado ${link} no existe`);
+    if (!arr) {
+      reject('Tenemos un problema en la función fetchLink');
     } else {
-      fetch(link)
-        .then((res) => {
-          const val = `El estatus es: ${res.status}, ${res.statusText}`;
-          // console.log(res.status);
-          resolve(val);
-        })
-        .catch(error => console.log('tenemos un error con el fetch'));
+      // const newArr = [];onst newArr = [];
+      resolve(arr.forEach(elementArr => {
+        // console.log(elementArr);
+        const url = elementArr.href;
+        fetch(url)
+          .then((res) => {
+            const val = `El estatus es: ${res.status}, ${res.statusText}`;
+            console.log('--------------------------------------');
+            console.log(`text: ${elementArr.text}`); 
+            console.log(`href: ${url}`);        
+            console.log(`File: ${elementArr.path}`);
+            console.log(`Status: ${val}`);
+            // newArr.push({
+            //   href: url,
+            //   text: elementArr.textContent,
+            //   file: elementArr.path,
+            //   status: val
+            // });
+          })
+          .catch(error => console.log(`tenemos un error con el fetch ${error}`));
+      }));
     }
   });
 };
+
 
 const mdFilterLinks = (fileHTML, path) => {
   return new Promise((resolve, reject) => {
@@ -35,11 +49,11 @@ const mdFilterLinks = (fileHTML, path) => {
       const arr = [];
       const result = dom.window.document.querySelectorAll('a');
       result.forEach((element) => {
-        const links = element.href;
-        const textContent = element.textContent;
+        const href = element.href;
+        const text = element.textContent;
         obj = {
-          links,
-          textContent,
+          href,
+          text,
           path,
         };
         arr.push(obj);
@@ -60,7 +74,10 @@ const readFile = (path) => {
         } else {
           const md = new MarkdownIt();
           const fileHTML = md.render(data);
-          return resolve({ fileHTML, path });
+          return resolve({
+            fileHTML,
+            path
+          });
         }
       });
     }
@@ -85,33 +102,20 @@ const mdConvertDir = (docMd) => {
 };
 
 // Funcion que llama a todas las demas desde la linea de comandos
-// const mdLinks = (docMd) => {
-//   return new Promise((resolve, reject) => {
-//     if (!docMd) {
-//       reject('Tenemos un error en la función mdLinks');
-//     } else {
-      
-//     }
-//   });
-// };
-
-mdConvertDir('prueba.md')
-  .then(pathDir => {
-    return readFile(pathDir);
-  })
-  .then(resp => {
-    // console.log(resp.fileHTML, resp.path);
-    return mdFilterLinks(resp.fileHTML, resp.path);
-  })
-  .then(arr =>{
-    console.log(arr);
-    return arr;
-  })
-  .catch(err => {
-    console.log(err);
+const mdLinks = (docMd) => {
+  return new Promise((resolve, reject) => {
+    if (!docMd) {
+      reject('Tenemos un error en la función mdLinks');
+    } else {
+      return resolve(docMd);
+    }
   });
+};
 
-
-// module.exports = {
-//   mdLinks
-// };
+module.exports = {
+  mdLinks,
+  mdConvertDir,
+  readFile,
+  mdFilterLinks,
+  fetchLink
+};
